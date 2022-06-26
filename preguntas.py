@@ -138,6 +138,7 @@ def pregunta_03():
         ],
     )
 
+
     # Entrene el pipeline con los datos de entrenamiento.
     pipeline.fit(X_train, y_train)
 
@@ -145,3 +146,30 @@ def pregunta_03():
     return pipeline
 
 
+def pregunta_04():
+    """
+    Evalue el modelo obtenido.
+    """
+
+    # Importe confusion_matrix
+    from sklearn.metrics import confusion_matrix
+
+    # Obtenga el pipeline de la pregunta 3.
+    pipeline = pregunta_03()
+
+    # Cargue las variables.
+    X_train, X_test, y_train, y_test = pregunta_02()
+
+    # Evalúe el pipeline con los datos de entrenamiento usando la matriz de confusion.
+    cfm_train = confusion_matrix(
+        y_true = y_train,
+        y_pred = pipeline.predict(X_train)
+    )
+
+    cfm_test = confusion_matrix(
+        y_true = y_test,
+        y_pred = pipeline.predict(X_test)
+    )
+
+    # Retorne la matriz de confusion de entrenamiento y prueba
+    return cfm_train, cfm_test
