@@ -83,3 +83,65 @@ def pregunta_01():
     return X, y
 
 
+def pregunta_02():
+    """
+    Preparación del dataset.
+    """
+
+    # Importe train_test_split
+    from sklearn.model_selection import train_test_split
+
+    # Cargue los datos de ejemplo y asigne los resultados a `X` y `y`.
+    X, y = pregunta_01()
+
+    # Divida los datos de entrenamiento y prueba. La semilla del generador de números
+    # aleatorios es 123. Use 50 patrones para la muestra de prueba.
+    (X_train, X_test, y_train, y_test,) = train_test_split(
+        X,
+        y,
+        test_size = 50,
+        random_state = 123,
+    )
+
+    # Retorne `X_train`, `X_test`, `y_train` y `y_test`
+    return X_train, X_test, y_train, y_test
+
+
+def pregunta_03():
+    """
+    Especificación y entrenamiento del modelo. En sklearn, el modelo de regresión
+    logística (a diferencia del modelo implementado normalmente en estadística) tiene
+    un hiperparámetro de regularición llamado `Cs`. Consulte la documentación.
+
+    Para encontrar el valor óptimo de Cs se puede usar LogisticRegressionCV.
+
+    Ya que las variables explicativas son literales, resulta más conveniente usar un
+    pipeline.
+    """
+
+    # Importe LogisticRegressionCV
+    # Importe OneHotEncoder
+    # Importe Pipeline
+    from sklearn.linear_model import LogisticRegressionCV
+    from sklearn.preprocessing import OneHotEncoder
+    from sklearn.pipeline import Pipeline
+
+    # Cargue las variables.
+    X_train, _, y_train, _ = pregunta_02()
+
+    # Cree un pipeline que contenga un estimador OneHotEncoder y un estimador
+    # LogisticRegression con una regularización Cs=10
+    pipeline = Pipeline(
+        steps = [
+            ("onehot", OneHotEncoder()),
+            ("logreg", LogisticRegressionCV(Cs = 10)),
+        ],
+    )
+
+    # Entrene el pipeline con los datos de entrenamiento.
+    pipeline.fit(X_train, y_train)
+
+    # Retorne el pipeline entrenado
+    return pipeline
+
+
